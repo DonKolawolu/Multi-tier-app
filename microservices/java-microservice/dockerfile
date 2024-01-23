@@ -1,0 +1,15 @@
+# Use the official OpenJDK image as the base image
+FROM openjdk:11
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the Java source code and the POM file
+COPY src/ ./src/
+COPY pom.xml .
+
+# Build the Java application
+RUN javac src/Main.java
+
+# Define the command to run the Java application
+CMD ["java", "src/Main"]

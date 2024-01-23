@@ -1,0 +1,15 @@
+# Use the official Ruby image as the base image
+FROM ruby:2.7
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the Ruby source code and the Gemfile
+COPY app.rb .
+COPY Gemfile .
+
+# Install Ruby dependencies
+RUN bundle install
+
+# Define the command to run the Ruby application
+CMD ["ruby", "app.rb"]

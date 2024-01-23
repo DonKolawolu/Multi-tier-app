@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "80:80"
+    networks:
+      - backend-network
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    ports:
+      - "3001:3001"
+    depends_on:
+      - java-microservice
+      - python-microservice
+      - ruby-microservice
+    networks:
+      - backend-network
+
+  python-microservice:
+    build:
+      context: ./microservices/python-microservice
+    ports:
+      - "3002:3002"
+    environment:
+      - MONGO_DB_HOST=mongodb
+    networks:
+      - backend-network
+
+  java-microservice:
+    build:
+      context: ./microservices/java-microservice
+    networks:
+      - backend-network
+
+  ruby-microservice:
+    build:
+      context: ./microservices/ruby-microservice
+    ports:
+      - "3003:3003"
+    networks:
+      - backend-network
+
+  mongodb:
+    build:
+      context: ./mongodb
+    environment:
+      - MONGO_INITDB_DATABASE=mydatabase
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+    driver: bridge
